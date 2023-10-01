@@ -41,6 +41,13 @@ public class ImplementRunnable {
         thread.start();
     }
 
+    /* Thread를 확장한 Thread */
+    public static void extendedThread() {
+        Thread thread = new ExtendedThread();
+        thread.setName("Extend-1");
+        thread.start();
+    }
+
     public static void main(String[] args) {
 //        try {
 //            create();
@@ -48,6 +55,15 @@ public class ImplementRunnable {
 //            throw new RuntimeException(e);
 //        }
 
-        handler();
+//        handler();
+        extendedThread();
+    }
+
+    /* Thread를 확장한 Private Class */
+    private static class ExtendedThread extends Thread {
+        @Override
+        public void run() {
+            log.info("Thread를 확장한 Class의 Thread 이름 : {}" , this.getName());
+        }
     }
 }
