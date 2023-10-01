@@ -8,7 +8,7 @@
 
 😯 **Multi-Threading을 통한 동시성 & 응답성 향상 및 고성능 구현** 😯
 
-프로젝트 내 사용 Directory : Thread
+**프로젝트 내 사용 Directory** : Thread
 
 <br>
 
