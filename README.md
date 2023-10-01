@@ -69,4 +69,4 @@
 <br>
 
 **분산 시스템, 빅데이터, 성능**
-- Not Yet
+- Not Studied Yet
