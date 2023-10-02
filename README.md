@@ -22,7 +22,7 @@
 
 <br>
 
-**Thread 상속**
+**Thread 상속 - 경찰과 도둑 예시**
 - [Inheritance Thread](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Inheritance.md)
 
 <br>
