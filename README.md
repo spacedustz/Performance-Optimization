@@ -19,7 +19,11 @@
 
 **Thread 생성 - Thread를 생성하는 2가지 방법**
 - [Runnable Interface 구현](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Create.md)
-- [Extends Thread](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Create2.md)
+
+<br>
+
+**Thread 상속**
+- [Inheritance Thread](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Inheritance.md)
 
 <br>
 
