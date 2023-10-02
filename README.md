@@ -29,8 +29,8 @@
 
 **Thread 조정 - Thread Termination**
 - [Thread를 interrupt 해야하는 이유](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Coordination/Basic.md)
-- [Thread.interrupt()를 이용한 Interrupt](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Coordination/Interrupt.md)
-- [Daemon Thread를 이용한 Interrupt](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Coordination/Daemon.md)
+- [Thread.interrupt()를 이용한 Thread Interrupt](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Coordination/Interrupt.md)
+- [Daemon Thread를 이용한 Thread Interrupt](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Coordination/Daemon.md)
 
 <br>
 
