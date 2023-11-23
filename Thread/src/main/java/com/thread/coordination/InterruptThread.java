@@ -4,6 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigInteger;
 
+/**
+ * 1. 인터럽트 하려는 스레드가 인터럽트 당했을 때 InterruptedException을 발생시키는 경우
+ * 2. 인터럽트 하려는 스레드가 신호를 명시적으로 처리하는 겨우
+ */
 @Slf4j
 public class InterruptThread {
 
@@ -22,7 +26,6 @@ public class InterruptThread {
 
     // 거듭제곱을 수행하는 스레드
     private static class LongComputationTask implements Runnable {
-
         private BigInteger base; // 밑수
         private BigInteger power; // 제곱
 
@@ -61,6 +64,7 @@ public class InterruptThread {
 
     public static void main(String[] args) {
         /* BlockingTask 실행 코드 */
+        /* main 스레드가 종료되었는데도 불구하고, Blocking Thread 때문에 앱이 종료가 되지 않음 */
 //        Thread thread = new Thread(new BlockingTask());
 //        thread.start();
 //
