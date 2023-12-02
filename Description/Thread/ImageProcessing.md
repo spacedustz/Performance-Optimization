@@ -23,7 +23,7 @@ RGB의 조합으로 모든 색을 표현할 수 있습니다.
 ![img](https://raw.githubusercontent.com/spacedustz/Obsidian-Image-Server/main/img2/Flowers.png)
 
 ---
-## 📘 **ImageProcessing**
+## 📘 **Single Threading**
 
 ImageProcessing 클래스를 만들어 2가지 색깔을 가지는 1종류의 꽃을 하나의 색으로 통일시켜 보겠습니다.
 
@@ -234,7 +234,7 @@ public class ImageProcessing {
 
 ---
 
-## 📘 Multi-Threading Solution
+## 📘 Multi-Threading
 
 위 코드에서 이미지를 분할하여 가진 스레드 수 만큼 이미지를 병렬 처리 해보겠습니다.
 
@@ -265,36 +265,36 @@ TopCorner는 **스레드에 맞게 변하는 threadMultiplier 변수 * 각 스�
 그 후, 모든 스레드를 시작하고 모두 join() 해주면 끝입니다.
 
 ```java
-public static void recolorMultiThread(BufferedImage original, BufferedImage result, int numberOfThreads) {  
-    List<Thread> threadList = new ArrayList<>();  
-    int width = original.getWidth();  
-    int height = original.getHeight() / numberOfThreads;  
-  
-    for (int i = 0; i < numberOfThreads; i++) {  
-        final int threadMultiplier = i;  
-  
-        Thread thread = new Thread(() -> {  
-            int leftCorner = 0;  
-            int topCorner = height * threadMultiplier;  
-  
-            recolorImage(original, result, leftCorner, topCorner, width, height);  
-        });  
-  
-        threadList.add(thread);  
-    }  
-  
-    for (Thread thread : threadList) {  
-        thread.start();  
-    }  
-  
-    for (Thread thread : threadList) {  
-        try {  
-            thread.join();  
-        } catch (InterruptedException e) {  
-            log.error("Thread Interrupted");  
-        }  
-    }  
-}
+public static void recolorMultiThread(BufferedImage original, BufferedImage result, int numberOfThreads) {
+        List<Thread> threadList = new ArrayList<>();
+        int width = original.getWidth();
+        int height = original.getHeight() / numberOfThreads;
+
+        for (int i = 0; i < numberOfThreads; i++) {
+final int threadMultiplier = i;
+
+        Thread thread = new Thread(() -> {
+        int leftCorner = 0;
+        int topCorner = height * threadMultiplier;
+
+        recolorImage(original, result, leftCorner, topCorner, width, height);
+        });
+
+        threadList.add(thread);
+        }
+
+        for (Thread thread : threadList) {
+        thread.start();
+        }
+
+        for (Thread thread : threadList) {
+        try {
+        thread.join();
+        } catch (InterruptedException e) {
+        log.error("Thread Interrupted");
+        }
+        }
+        }
 ```
 
 이제 싱글스레드, 멀티스레드 두 작업 시간을 비교해보겠습니다.
@@ -310,28 +310,28 @@ public static void recolorMultiThread(BufferedImage original, BufferedImage resu
 > 📕 **싱글 스레드**
 
 ```java
-public static void main(String[] args) throws IOException {  
-    Resource originalResource = new ClassPathResource(SOURCE_IMG);  
-    BufferedImage originalImage = ImageIO.read((originalResource.getFile()));  
-    BufferedImage resultImage = new BufferedImage(  
-            originalImage.getWidth(),  
-            originalImage.getHeight(),  
-            BufferedImage.TYPE_INT_RGB // Color Space  
-    );  
-  
-    long startTime = System.currentTimeMillis();  
-  
-    recolorSingleThread(originalImage, resultImage);  
-  
-    long endTime = System.currentTimeMillis();  
-  
-    long duration = endTime - startTime;  
-  
-    File outputResult = new File(DESTINATION_IMG); // 파일 생성  
-    outputResult.getParentFile().mkdirs();  
-    ImageIO.write(resultImage, "png", outputResult); // 파일 Write  
-    log.info("총 작업에 걸린 시간 : {}", duration);  
-}
+public static void main(String[] args) throws IOException {
+        Resource originalResource = new ClassPathResource(SOURCE_IMG);
+        BufferedImage originalImage = ImageIO.read((originalResource.getFile()));
+        BufferedImage resultImage = new BufferedImage(
+        originalImage.getWidth(),
+        originalImage.getHeight(),
+        BufferedImage.TYPE_INT_RGB // Color Space  
+        );
+
+        long startTime = System.currentTimeMillis();
+
+        recolorSingleThread(originalImage, resultImage);
+
+        long endTime = System.currentTimeMillis();
+
+        long duration = endTime - startTime;
+
+        File outputResult = new File(DESTINATION_IMG); // 파일 생성  
+        outputResult.getParentFile().mkdirs();
+        ImageIO.write(resultImage, "png", outputResult); // 파일 Write  
+        log.info("총 작업에 걸린 시간 : {}", duration);
+        }
 ```
 
 <br>
@@ -350,28 +350,28 @@ public static void main(String[] args) throws IOException {
 스레드를 2개, 3개 두 번 돌려봤습니다. 스레드를 1개씩 추가할 떄마다 걸린 시간이 줄어듭니다.
 
 ```java
-public static void main(String[] args) throws IOException {  
-    Resource originalResource = new ClassPathResource(SOURCE_IMG);  
-    BufferedImage originalImage = ImageIO.read((originalResource.getFile()));  
-    BufferedImage resultImage = new BufferedImage(  
-            originalImage.getWidth(),  
-            originalImage.getHeight(),  
-            BufferedImage.TYPE_INT_RGB // Color Space  
-    );  
-  
-    long startTime = System.currentTimeMillis();  
-  
-    recolorMultiThread(originalImage, resultImage, 3);  
-  
-    long endTime = System.currentTimeMillis();  
-  
-    long duration = endTime - startTime;  
-  
-    File outputResult = new File(DESTINATION_IMG); // 파일 생성  
-    outputResult.getParentFile().mkdirs();  
-    ImageIO.write(resultImage, "png", outputResult); // 파일 Write  
-    log.info("총 작업에 걸린 시간 : {}", duration);  
-}
+public static void main(String[] args) throws IOException {
+        Resource originalResource = new ClassPathResource(SOURCE_IMG);
+        BufferedImage originalImage = ImageIO.read((originalResource.getFile()));
+        BufferedImage resultImage = new BufferedImage(
+        originalImage.getWidth(),
+        originalImage.getHeight(),
+        BufferedImage.TYPE_INT_RGB // Color Space  
+        );
+
+        long startTime = System.currentTimeMillis();
+
+        recolorMultiThread(originalImage, resultImage, 3);
+
+        long endTime = System.currentTimeMillis();
+
+        long duration = endTime - startTime;
+
+        File outputResult = new File(DESTINATION_IMG); // 파일 생성  
+        outputResult.getParentFile().mkdirs();
+        ImageIO.write(resultImage, "png", outputResult); // 파일 Write  
+        log.info("총 작업에 걸린 시간 : {}", duration);
+        }
 ```
 
 **걸린 시간**
@@ -425,4 +425,3 @@ public static void main(String[] args) throws IOException {
 - 큰 작업을 멀티스레드로 실행하면 속도와 성능을 크게 개선할 수 있다.
 - 스레드가 코어보다 많이 생성되면 Blocking 호출이 없고 단순히 계산만 하는 문제에 대해선 역효과를 낳는다.
 - 멀티스레드 구현에는 그만한 비용이 드므로 분할 효과를 보려면 작업이 커야 한다. (오버헤드, 스위칭 비용)
-
