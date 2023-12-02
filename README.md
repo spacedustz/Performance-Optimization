@@ -36,7 +36,8 @@
 <br>
 
 **성능 최적화**
-- Not Studied Yet
+- [성능의 정의](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Optimization.md)
+- [이미지 픽셀 처리 - 멀티스레딩](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/ImageProcessing.md)
 
 <br>
 
