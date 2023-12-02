@@ -36,8 +36,8 @@
 <br>
 
 **성능 최적화**
-- [Perfomance Optimization : 성능의 정의](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Optimization.md)
-- [Image Processing : 이미지 픽셀 처리](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/ImageProcessing.md)
+- [Perfomance Optimization - 성능의 정의](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/Optimization.md)
+- [Image Processing - 이미지 픽셀 처리](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/ImageProcessing.md)
 
 <br>
 
