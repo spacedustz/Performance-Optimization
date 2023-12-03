@@ -47,6 +47,7 @@
 
 **처리량**
 - [Throughput Optimization - 처리량의 정의](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/4-성능최적화/Throughput-Basic.md)
+- [Throughput Optimization - 처리량 최적화 & 성능 테스트 (Apache Jmeter)](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/4-성능최적화/Throughput-Implementation.md)
 
 <br><br>
 
