@@ -77,14 +77,14 @@ Thread Safe한 원자적 연산을 가능하게 됩니다.
 
 ```java
 public class SomeBusinessLogicClass {
-	public void time() {
-		long start = System.currentTimeMillis();
-		// Important Operation
-		long end = System.currentTimeMillis();
+    public void time() {
+        long start = System.currentTimeMillis();
+        // Important Operation
+        long end = System.currentTimeMillis();
 
-		long duration = end - start;
-		captureMetrics(duration);
-	}
+        long duration = end - start;
+        captureMetrics(duration);
+    }
 }
 ```
 
@@ -116,79 +116,79 @@ public class SomeBusinessLogicClass {
 - 즉, 메인 메모리에서 값을 읽고 씀으로써 항상 최신의 값을 보장하여 가시성 문제를 방지합니다.
 
 ```java
-@Slf4j  
-public class TimeAverage {  
-    public static void main(String[] args) {  
-        Metrics metrics = new Metrics();  
-  
-        BusinessLogic business1 = new BusinessLogic(metrics);  
-        BusinessLogic business2 = new BusinessLogic(metrics);  
-        MetricsPrinter printer = new MetricsPrinter(metrics);  
-  
-        business1.start();  
-        business2.start();  
-        printer.start();  
-    }  
-  
-    /* 샘플의 평균값을 가지고 있는 클래스 */    
-    @Getter  
-    public static class Metrics {  
+@Slf4j
+public class TimeAverage {
+    public static void main(String[] args) {
+        Metrics metrics = new Metrics();
+
+        BusinessLogic business1 = new BusinessLogic(metrics);
+        BusinessLogic business2 = new BusinessLogic(metrics);
+        MetricsPrinter printer = new MetricsPrinter(metrics);
+
+        business1.start();
+        business2.start();
+        printer.start();
+    }
+
+    /* 샘플의 평균값을 가지고 있는 클래스 */
+    @Getter
+    public static class Metrics {
         private long count = 0; // 지금까지 캡쳐된 샘플의 개수를 추적하는 Count 변수  
         private volatile double average = 0.0; // 모든 샘플의 총합을 개수로 나눈 평균값  
-  
+
         // 새로운 Sample 값을 받아 새로운 평균값을 업데이트 해주는 함수  
-        public synchronized void addSample(long sample) {  
+        public synchronized void addSample(long sample) {
             double currentSum = average * count; // 기존 평균값  
-            count++;  
+            count++;
             average = (currentSum + sample) / count; // 새로운 평균값  
-        }  
-    }  
-  
-    /* 시작 & 종료 시간을 캡쳐해 샘플을 추가하는 클래스 */    
-    @RequiredArgsConstructor  
-    public static class BusinessLogic extends Thread {  
-        private final Metrics metrics;  
-        private Random random = new Random();  
-  
-        @Override  
-        public void run() {  
-  
-            while (true) {  
-                long start = System.currentTimeMillis();  
-  
-                try {  
-                    Thread.sleep(random.nextInt(10));  
-                } catch (InterruptedException e) {  
-                    log.error("Thread Interrupted");  
-                }  
-  
-                long end = System.currentTimeMillis();  
-  
-                metrics.addSample(end - start);  
-            }  
-        }  
-    }  
-  
-    /* BusinessLogic 클래스와 병렬로 실행되며 BusinessLogic의 평균 시간을 캡쳐 후 출력하는 클래스 */ 
-    @RequiredArgsConstructor  
-    public static class MetricsPrinter extends Thread {  
-        private final Metrics metrics;  
-  
-        @Override  
-        public void run() {  
-            while (true) {  
-                try {  
-                    Thread.sleep(100);  
-                } catch (InterruptedException e) {  
-                    log.error("Thread Interrupted");  
-                }  
-  
-                double currentAverage = metrics.getAverage();  
-  
-                log.info("현재 Average 값 : {}", currentAverage);  
-            }  
-        }  
-    }  
+        }
+    }
+
+    /* 시작 & 종료 시간을 캡쳐해 샘플을 추가하는 클래스 */
+    @RequiredArgsConstructor
+    public static class BusinessLogic extends Thread {
+        private final Metrics metrics;
+        private Random random = new Random();
+
+        @Override
+        public void run() {
+
+            while (true) {
+                long start = System.currentTimeMillis();
+
+                try {
+                    Thread.sleep(random.nextInt(10));
+                } catch (InterruptedException e) {
+                    log.error("Thread Interrupted");
+                }
+
+                long end = System.currentTimeMillis();
+
+                metrics.addSample(end - start);
+            }
+        }
+    }
+
+    /* BusinessLogic 클래스와 병렬로 실행되며 BusinessLogic의 평균 시간을 캡쳐 후 출력하는 클래스 */
+    @RequiredArgsConstructor
+    public static class MetricsPrinter extends Thread {
+        private final Metrics metrics;
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    log.error("Thread Interrupted");
+                }
+
+                double currentAverage = metrics.getAverage();
+
+                log.info("현재 Average 값 : {}", currentAverage);
+            }
+        }
+    }
 }
 ```
 
@@ -236,5 +236,21 @@ volatile 키워드를 사용한 double / long에 대한 할당 작업 구별할 
 원자적 연산에 대한 판단은 멀티스레딩 환경에서 수 많은 작업을 병렬 실행하면서,
 
 정확한 결과값을 도출할 수 있고 고성능 어플리케이션을 구축하는데 있어 핵심입니다.
+
+<br>
+
+> 🚩 **학습한 점**
+
+- volatile 변수는 변수의 값을 항상 메인 메모리에서 직접 읽히도록 한다.
+- volatile 변수에 새 값이 대입되면 이 값은 언제나 메인 메모리로 즉시 쓰여진다.
+- 이 동작은 다른 CPU 에서 동작하는 다른 쓰레드에게 항상 volatile 변수의 최신 값이 읽히도록 보장한다. 
+- volatile 변수의 값은 CPU 캐시가 아닌 메인 메모리로부터 직접 읽히게 된다.
+- volatile 변수는 논 블로킹이다.
+- volatile 변수로의 쓰기는 원자적 연산이고, 다른 쓰레드가 끼어들 수 없다.
+- 하지만 volatile 변수라 할지라도 연속적인 읽기-값 변경-쓰기 동작은 원자적이지 않다.
+- 다음 코드는 둘 이상의 쓰레드에 의해 수행된다면 여전히 경합을 유발한다
+
+<br>
+
 
 volatile에 대해서는 다음에 더 자세히 다뤄볼 예정입니다.
