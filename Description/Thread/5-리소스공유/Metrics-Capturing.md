@@ -2,7 +2,7 @@
 
 원자적인 연산(Atomic Operation)을 판단하는 기준이 뭘까요?
 
-전 글에서 예시를 들며 학습했었지만 아직 크게 와닿지는 않습니다.
+전 글에서 예시를 들며 학습 했었지만 아직 크게 와 닿지는 않습니다.
 
 <br>
 
@@ -10,21 +10,21 @@
 
 즉, 공유 변수에 액세스할 수 있는 모든 함수를 동기화 시킵니다.
 
-그럼 병렬로 실행되는 코드의 개수를 최소화 해주게 되는데요
+그럼 병렬로 실행되는 코드의 개수를 최소화 해주게 되는데요.
 
 <br>
 
-예를 들어 동시 실행될거라 짐작하는 스레드를 4개 만들어서 실행하면,
+예를 들어 동시 실행 될 거라 짐작하는 스레드를 4개 만들어서 실행하면,
 
-모든 함수가 동기화된 상태라 한번에 1개의 스레드만 실행 되고 나머지 3개는 Suspend 상태로 있게 됩니다.
+모든 함수가 동기화 된 상태라 한번에 1개의 스레드만 실행 되고 나머지 3개는 Suspend 상태로 있게 됩니다.
 
-이러면 사실상 스레드 1개만 있는거랑 다를게 없습니다.
+이러면 사실상 스레드 1개만 있는것과 다를게 없습니다.
 
 <br>
 
-더 안좋은 점은 여러 스레드를 유지하기 위한 컨텍스트를 스위칭과 메모리 오버헤드까지 발생해
+더 안 좋은 점은 여러 스레드를 유지하기 위한 컨텍스트 스위칭 & 메모리 오버헤드까지 발생해
 
-오히려 단일 스레드로 사용하는것 보다 훨씬 좋지 않은 성능을 가지게 됩니다.
+오히려 단일 스레드로 사용하는 것 보다 훨씬 좋지 않은 성능을 가지게 됩니다.
 
 <br>
 
@@ -56,14 +56,14 @@
 
 > 🚩 **long / double이 Atomic Operation이 아닌 이유**
 
-- long과 double은 길이가 64비트여서 Java에서 보장 해주지 않습니다.
+- long과 double은 길이가 64비트여서 Java에서 데이터 일관성을 보장 해주지 않습니다.
 - 64비트 기반 컴퓨터의 경우에도 long이나 double에 Write 작업을 하면 실제로 CPU 2개를 사용해 연산을 할 가능성이 높습니다.
 
 <br>
 
-위의 이유로 long / double 을 사용할 때 `volatile` 키워드를 사용하면 해당 변수에 Read / Write 작업이,
+위의 이유로 long / double 을 사용할 때 `volatile` 키워드를 사용하면 해당 변수의 Read / Write 작업이,
 
-Thread Safe한 원자적 연산이 가능하게 됩니다.
+Thread Safe한 원자적 연산을 가능하게 됩니다.
 
 내부적으로 보면 2개의 하드웨어 연산이 아닌, 1개의 하드웨어 연산으로 작업을 수행하는걸 보장합니다.
 
@@ -77,14 +77,14 @@ Thread Safe한 원자적 연산이 가능하게 됩니다.
 
 ```java
 public class SomeBusinessLogicClass {
-    public void time() {
-        long start = System.currentTimeMillis();
-        // Important Operation
-        long end = System.currentTimeMillis();
+	public void time() {
+		long start = System.currentTimeMillis();
+		// Important Operation
+		long end = System.currentTimeMillis();
 
-        long duration = end - start;
-        captureMetrics(duration);
-    }
+		long duration = end - start;
+		captureMetrics(duration);
+	}
 }
 ```
 
@@ -104,7 +104,7 @@ public class SomeBusinessLogicClass {
 
 우선 **동기화된 appSample 함수**는 코드 자체가 synchronized가 없으면,
 
-여러 스레드가 동시에 average와 count를 수정할때 데이터의 일관성을 보장하기 위해 동기화 시켜 주었습니다.
+여러 스레드가 동시에 average와 count를 수정할때 데이터의 일관성을 보장하기 힘들게 때문에 동기화 시켜 주었습니다.
 
 <br>
 
@@ -116,79 +116,79 @@ public class SomeBusinessLogicClass {
 - 즉, 메인 메모리에서 값을 읽고 씀으로써 항상 최신의 값을 보장하여 가시성 문제를 방지합니다.
 
 ```java
-@Slf4j
-public class TimeAverage {
-    public static void main(String[] args) {
-        Metrics metrics = new Metrics();
-
-        BusinessLogic business1 = new BusinessLogic(metrics);
-        BusinessLogic business2 = new BusinessLogic(metrics);
-        MetricsPrinter printer = new MetricsPrinter(metrics);
-
-        business1.start();
-        business2.start();
-        printer.start();
-    }
-
-    /* 샘플의 평균값을 가지고 있는 클래스 */
-    @Getter
-    public static class Metrics {
+@Slf4j  
+public class TimeAverage {  
+    public static void main(String[] args) {  
+        Metrics metrics = new Metrics();  
+  
+        BusinessLogic business1 = new BusinessLogic(metrics);  
+        BusinessLogic business2 = new BusinessLogic(metrics);  
+        MetricsPrinter printer = new MetricsPrinter(metrics);  
+  
+        business1.start();  
+        business2.start();  
+        printer.start();  
+    }  
+  
+    /* 샘플의 평균값을 가지고 있는 클래스 */    
+    @Getter  
+    public static class Metrics {  
         private long count = 0; // 지금까지 캡쳐된 샘플의 개수를 추적하는 Count 변수  
         private volatile double average = 0.0; // 모든 샘플의 총합을 개수로 나눈 평균값  
-
+  
         // 새로운 Sample 값을 받아 새로운 평균값을 업데이트 해주는 함수  
-        public synchronized void addSample(long sample) {
+        public synchronized void addSample(long sample) {  
             double currentSum = average * count; // 기존 평균값  
-            count++;
+            count++;  
             average = (currentSum + sample) / count; // 새로운 평균값  
-        }
-    }
-
-    /* 시작 & 종료 시간을 캡쳐해 샘플을 추가하는 클래스 */
-    @RequiredArgsConstructor
-    public static class BusinessLogic extends Thread {
-        private final Metrics metrics;
-        private Random random = new Random();
-
-        @Override
-        public void run() {
-
-            while (true) {
-                long start = System.currentTimeMillis();
-
-                try {
-                    Thread.sleep(random.nextInt(10));
-                } catch (InterruptedException e) {
-                    log.error("Thread Interrupted");
-                }
-
-                long end = System.currentTimeMillis();
-
-                metrics.addSample(end - start);
-            }
-        }
-    }
-
-    /* BusinessLogic 클래스와 병렬로 실행되며 BusinessLogic의 평균 시간을 캡쳐 후 출력하는 클래스 */
-    @RequiredArgsConstructor
-    public static class MetricsPrinter extends Thread {
-        private final Metrics metrics;
-
-        @Override
-        public void run() {
-            while (true) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    log.error("Thread Interrupted");
-                }
-
-                double currentAverage = metrics.getAverage();
-
-                log.info("현재 Average 값 : {}", currentAverage);
-            }
-        }
-    }
+        }  
+    }  
+  
+    /* 시작 & 종료 시간을 캡쳐해 샘플을 추가하는 클래스 */    
+    @RequiredArgsConstructor  
+    public static class BusinessLogic extends Thread {  
+        private final Metrics metrics;  
+        private Random random = new Random();  
+  
+        @Override  
+        public void run() {  
+  
+            while (true) {  
+                long start = System.currentTimeMillis();  
+  
+                try {  
+                    Thread.sleep(random.nextInt(10));  
+                } catch (InterruptedException e) {  
+                    log.error("Thread Interrupted");  
+                }  
+  
+                long end = System.currentTimeMillis();  
+  
+                metrics.addSample(end - start);  
+            }  
+        }  
+    }  
+  
+    /* BusinessLogic 클래스와 병렬로 실행되며 BusinessLogic의 평균 시간을 캡쳐 후 출력하는 클래스 */ 
+    @RequiredArgsConstructor  
+    public static class MetricsPrinter extends Thread {  
+        private final Metrics metrics;  
+  
+        @Override  
+        public void run() {  
+            while (true) {  
+                try {  
+                    Thread.sleep(100);  
+                } catch (InterruptedException e) {  
+                    log.error("Thread Interrupted");  
+                }  
+  
+                double currentAverage = metrics.getAverage();  
+  
+                log.info("현재 Average 값 : {}", currentAverage);  
+            }  
+        }  
+    }  
 }
 ```
 
@@ -225,11 +225,11 @@ public class TimeAverage {
 ---
 ## 📘 Summary
 
-위 코드를 토대로 어떤 연산이 동기화 없이도 안전하게 수행될 수 있는지, 원자적인 연산인지에 대해 좀 더 알아 보았습니다.
+위 코드를 토대로 어떤 연산이 동기화 없이도 안전하게 수행될 수 있는지, 원자적 연산인지에 대해 좀 더 알아 보았습니다.
 
-위 작업은 double / long을 제외한 Primitive Type에 대한 할당 작업과 Reference에 대한 할당작업,
+위 작업은 double / long을 제외한 Primitive Type에 대한 할당 작업과 Reference에 대한 할당 작업,
 
-volatile 키워드를 사용한 double / long에 대한 할당이었습니다.
+volatile 키워드를 사용한 double / long에 대한 할당 작업 구별할 수 있는 예시 프로그램입니다.
 
 <br>
 
