@@ -56,6 +56,7 @@
 **Thread 간 데이터 공유**
 - [Share Resource - 스레드간 리소스 공유 시 발생할 수 있는 문제점 (Atomic Operation)](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/5-리소스공유/SharingResource.md)
 - [Critical Section & Synchronized with Lock](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/5-리소스공유/Critical-Section-Lock.md)
+- [Atomic Operation 판단기준 & volatile 키워드](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/5-리소스공유/Metrics-Capturing.md)
 
 <br><br>
 
