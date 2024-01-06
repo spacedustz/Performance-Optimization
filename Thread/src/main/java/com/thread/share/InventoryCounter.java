@@ -11,9 +11,9 @@ public class InventoryCounter {
         DecrementingThread decrement = new DecrementingThread(counter);
 
         increment.start();
-        increment.join();
-
         decrement.start();
+
+        increment.join();
         decrement.join();
 
         log.info("현재 아이템 개수 : {}", counter.getItems());
@@ -22,10 +22,24 @@ public class InventoryCounter {
     /* Item을 관리하는 Counter */
     private static class Counter {
         private int items = 0;
+        Object lock = new Object(); // Lock 객체
 
-        public void increment() { items++; }
-        public void decrement() { items--; }
-        public int getItems() { return items; }
+        public void increment() {
+            // Synchronized 블럭을 만들어서 Lock 객체에 동기화 시킴
+            synchronized (this.lock) {
+                items++;
+            }
+        }
+        public synchronized void decrement() {
+            synchronized (this.lock) {
+                items--;
+            }
+        }
+        public synchronized int getItems() {
+            synchronized (this.lock) {
+                return items;
+            }
+        }
     }
 
     /* Item을 10000개 증가 시키는 스레드 */
