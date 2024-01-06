@@ -54,7 +54,7 @@
 > 📕 **5. Thread 간 데이터 공유 (Stack & Heap / 임계영역)**
 
 **Thread 간 데이터 공유**
-- Not Studied Yet
+- [Share Resource - 스레드간 리소스 공유 시 발생할 수 있는 문제점 (Atomic Operation)](https://github.com/spacedustz/Performance-Optimization/blob/main/Description/Thread/5-리소스공유/SharingResource.md)
 
 <br><br>
 
