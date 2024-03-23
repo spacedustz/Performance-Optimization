@@ -64,7 +64,7 @@
 > 📕 **6. 동시성 문제와 해결 방법 (임계영역, 동기화, 경쟁상태, Thread Lock, DeadLock)**
 
 **동시성 문제와 해결법**
-- Not Studied Yet
+- [Coarse-Grained & Fine-Grained Lock & Dead Lock 방지](./Description/Thread/6-동시성문제/Lock.md)
 
 <br><br>
 
