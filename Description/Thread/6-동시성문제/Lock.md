@@ -35,7 +35,7 @@ public classSHaredClass {
     }
     
     public void addTaskToQueue() {
-        // 큐에 작업을 추가하려는 스레드
+        // 큐에 작업을 추가하려는 스레드git
     }
 }
 ```
@@ -58,7 +58,7 @@ public classSHaredClass {
 
 아래는 Dead Lock이 발생하는 코드 예시 입니다.
 
-![](./1.PNG)
+![](./1.png)
 
 Thread 1에서 리소스 A에 Lock을 걸고, Thread 2에서 리소스 B에 Lock을 겁니다. (성공)
 
