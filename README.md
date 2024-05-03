@@ -71,7 +71,8 @@
 > 📕 **7. Thread Locking 심화 (Reentrant Lock)**
 
 **Locking**
-- [ReentrantLock - tryLock() & lockInterruptibly()](Description/7-Locking심화/1.%20ReentrantLock-tryLock.md)
+- [ReentrantLock - tryLock() & lockInterruptibly()](./Description/7-Locking심화/1.%20ReentrantLock-tryLock.md)
+- [ReentrantReadWriteLock을 이용한 조회 성능 향상 (5배)](./Description/7-Locking심화/2.%20ReentrantReadWriteLock.md)
 
 <br><br>
 
