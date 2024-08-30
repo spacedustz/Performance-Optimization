@@ -79,7 +79,7 @@
 > 📕 **8. Thread 간 통신 (세마포어, CountDownLatch를 이용한 Thread Blocking)**
 
 **Thread 간 통신**
-- Not Studied Yet
+- [Producer-Consumer 패턴을 이용한 Semaphore 구현](./Thread/src/main/java/com/thread/communicate/SemaphoreImpl.java)
 
 <br><br>
 
