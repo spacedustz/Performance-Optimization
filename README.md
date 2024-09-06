@@ -79,7 +79,10 @@
 > 📕 **8. Thread 간 통신 (세마포어, CountDownLatch를 이용한 Thread Blocking)**
 
 **Thread 간 통신**
-- [Producer-Consumer 패턴을 이용한 Semaphore 구현](./Thread/src/main/java/com/thread/communicate/SemaphoreImpl.java)
+- [Semaphore 란?](./Description/8-스레드간-통신/Semaphore/Semaphore.md)
+  - [Binary Semaphore와 Mutex의 차이점](./Description/8-스레드간-통신/Semaphore/Binary-Semaphore.md) 
+  - [Producer-Consumer 패턴을 이용한 Semaphore 구현](./Thread/src/main/java/com/thread/communicate/SemaphoreImpl.java)
+  - [Semaphore Barrier - 멀티스레딩 작업 순서 제어](./Description/8-스레드간-통신/Semaphore/작업순서제어.md)
 
 <br><br>
 
