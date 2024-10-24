@@ -1,6 +1,6 @@
 ## 📚 Lock-Free Algorithm
 
-이번에 배운 Lock-Free 알고리즘은 동시성 제어에서 중요한 개념중 하나입니다.
+Lock-Free 알고리즘은 동시성 제어에서 중요한 개념중 하나입니다.
 
 주로 멀티스레딩 환경에서 Lock을 사용하지 않고도 Shared Resource에 안전하게 접근하거나 제어할 수 있는 방법입니다.
 
@@ -46,5 +46,63 @@
 
 ---
 
-## 📚 Atomic
+## 📚 Atomic Class
+
+AtomicInteger는 Java에서 제공하는 클래스 중 하나로, 원자적인 정수 연산을 지원하고, 이를 통해 멀티스레드 환경에서 안전하게 정수 값을 관리할 수 있습니다.
+
+이 클래스를 통해 락이나 동기화를 사용하지 않으니 Race Condition이나 Data Race를 걱정하지 않아도 됩니디.
+
+<br>
+
+### 장점
+
+**원자성**
+
+AtomicInteger는 내부적으로 synchronized 블록이나 다른 동기화 메커니즘 없이도 원자적인 연산을 제공합니다. 
+
+이는 여러 스레드가 동시에 접근하더라도 데이터의 일관성을 유지할 수 있게 해줍니다.
+
+<br>
+
+**성능**
+
+일반적인 동기화 방법보다 더 가볍고 빠르며, 락을 사용하지 않기 때문에 성능이 향상됩니다. 
+
+이는 특히 높은 동시성이 요구되는 경우에 유리합니다.
+
+<br>
+
+**CAS (Compare-And-Swap)**
+
+AtomicInteger는 CAS 알고리즘을 사용하여 값의 변경을 수행합니다. 
+
+이 방법은 특정 조건이 만족될 때만 값을 업데이트하는 방식으로, 충돌을 최소화합니다.
+
+<br>
+
+**주요 메서드**
+
+- incrementAndGet(): 현재 값을 1 증가시키고, 증가된 값을 반환합니다.
+- decrementAndGet(): 현재 값을 1 감소시키고, 감소된 값을 반환합니다.
+- addAndGet(int delta): 지정된 값만큼 더하고, 결과를 반환합니다.
+- compareAndSet(int expect, int update): 현재 값이 expect와 같으면 update로 변경하고, 성공 여부를 반환합니다.
+
+<br>
+
+### 단점
+
+Atomic 관련 함수들은 원자적인 특성을 갖고 있지만, 다른 연산과 함께 원자적으로 실행할 수 없습니다.
+
+예를 들어 아래 incrementAndGet 함수와 addAndGet 함수는 각각 원자적인 연산이지만,
+
+**두 연산 간의 관계가 원자적이지 않기 때문에** Race Condition이 발생할 수 있습니다.
+
+```java
+int initialValue = 0;
+AtomicInteger n = new AtomicInteger(initialValue);
+
+// Race Condition 가능성 O
+n.incrementAndGet();
+n.addAndGet(-5);
+```
 
