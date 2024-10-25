@@ -1,8 +1,20 @@
 ## 📚 Lock-Free Algorithm
 
-Lock-Free 알고리즘은 동시성 제어에서 중요한 개념중 하나입니다.
+Lock-Free 알고리즘은 여러개의 Thread에서 동시 호출 시 정해진 단위 시간마다 적어도 1개의 호출이 완료되는 알고리즘이며, 동시성 제어에서 중요한 개념중 하나입니다.
 
-주로 멀티스레딩 환경에서 Lock을 사용하지 않고도 Shared Resource에 안전하게 접근하거나 제어할 수 있는 방법입니다.
+간단히 요약하면 **Lock을 사용하지 않고 Atomic 연산을 통해 구현하며, 하드웨어 레벨에서 연산의 원자성을 보장합니다.**
+
+<br>
+
+**유의할 점**
+
+- CAS(Compare And Set)를 사용하는 Atomic 클래스는 **Thread 간 경합이 있을 때** 성능이 다소 낮아질 수 있십니다.
+- 하지만 여전히 Lock을 사용하지 않기 때문에 Lock과 비교해 더 빠르고 데드락이 없는 Lock-Free 구현이 가능합니다.
+- CAS에 
+
+<br>
+
+물론 Lock을 사용 하는게 더 좋다거나 사용 안한다고 더 좋다기 보다 상황에 맞게 선택할 수 있는 선택지를 늘리는 차원에서 공부해 보았습니다.
 
 그럼 왜 Lock이 있는데 Lock을 사용하지 않는지, 왜 위험한지 공부할겸 이유를 다시 적어보겠습니다.
 
@@ -46,9 +58,9 @@ Lock-Free 알고리즘은 동시성 제어에서 중요한 개념중 하나입�
 
 ---
 
-## 📚 Atomic Class
+## 📚 Atomic Operation
 
-AtomicInteger는 Java에서 제공하는 클래스 중 하나로, 원자적인 정수 연산을 지원하고, 이를 통해 멀티스레드 환경에서 안전하게 정수 값을 관리할 수 있습니다.
+Atomic Operation(AtomicInteger, AtomicLong, AtomicBoolean 등등)은 Java에서 제공하는 클래스 중 하나로, 원자적인 정수 연산을 지원하고 멀티스레드 환경에서 안전하게 정수 값을 관리할 수 있습니다.
 
 이 클래스를 통해 락이나 동기화를 사용하지 않으니 Race Condition이나 Data Race를 걱정하지 않아도 됩니디.
 
@@ -76,7 +88,9 @@ AtomicInteger는 내부적으로 synchronized 블록이나 다른 동기화 메�
 
 AtomicInteger는 CAS 알고리즘을 사용하여 값의 변경을 수행합니다. 
 
-이 방법은 특정 조건이 만족될 때만 값을 업데이트하는 방식으로, 충돌을 최소화합니다.
+메모리의 특정 값이 예상 값과 일치할 때만 새로운 값으로 원자적으로 교체하는 연산입니다. 
+
+예상한 값과 실제 값이 다르면 교체하지 않고 단순히 실패를 반환하므로, 여러 스레드가 동시에 같은 자원에 접근할 수 있습니다.
 
 <br>
 
@@ -97,12 +111,87 @@ Atomic 관련 함수들은 원자적인 특성을 갖고 있지만, 다른 연�
 
 **두 연산 간의 관계가 원자적이지 않기 때문에** Race Condition이 발생할 수 있습니다.
 
-```java
-int initialValue = 0;
-AtomicInteger n = new AtomicInteger(initialValue);
+<br>
 
-// Race Condition 가능성 O
-n.incrementAndGet();
-n.addAndGet(-5);
+### Lock-Free 예제
+
+기존에 사용하던 Lock이나 synchronized 키워드없이 AtomicInteger를 통해 InventoryCounter를 10000번씩 증가/감소 시키는 연산을 원자적으로 할 수 있습니다.
+
+결과값은 10000번의 increment를 할떄까지 Decrementing Thread가 대기후 다시 10000번을 감소시켜 0이 나오게 됩니다.
+
+**만약 싱글스레드 환경이라면** 일반 Integer를 사용하는 것보다 성능상 느리기 떄문에 원자적 연산이 중요한 로직에서만 사용할 것을 추천드립니다.
+
+```java
+@Slf4j
+public class ECommerceInventoryCounter {
+    public static void main(String[] args) throws InterruptedException {
+        InventoryCounter counter = new InventoryCounter();
+        IncrementingThread incrementingThread = new IncrementingThread(counter);
+        DecrementingThread decrementingThread = new DecrementingThread(counter);
+
+        incrementingThread.start();
+        decrementingThread.start();
+
+        incrementingThread.join();
+        decrementingThread.join();
+
+        log.info("현재 보유한 아이템 수 : {}", counter.getItems());
+    }
+
+    // 증가 스레드
+    @AllArgsConstructor
+    public static class IncrementingThread extends Thread {
+        private InventoryCounter inventoryCounter;
+
+        @Override
+        public void run() {
+            for (int i=0; i<10000; i++) {
+                inventoryCounter.increment();
+            }
+        }
+    }
+
+    // 감소 스레드
+    @AllArgsConstructor
+    public static class DecrementingThread extends Thread {
+        private InventoryCounter inventoryCounter;;
+
+        @Override
+        public void run() {
+            for (int i=0; i<10000; i++) {
+                inventoryCounter.decrement();
+            }
+        }
+    }
+
+    // 인벤토리 카운터
+    public static class InventoryCounter {
+        private AtomicInteger items = new AtomicInteger(0);
+
+        public void increment() {
+            items.incrementAndGet();
+        }
+
+        public void decrement() {
+            items.decrementAndGet();
+        }
+
+        public int getItems() {
+            return items.get();
+        }
+    }
+}
 ```
 
+```text
+13:14:04.856 [main] INFO com.thread.lockfree.ECommerceInventoryCounter -- 현재 보유한 아이템 수 : 0
+Process finished with exit code 0
+```
+
+<br>
+
+다음 글에서는 Lock이 걸리지 않은 Thread-Safe한 데이터 구조를 구현할거고,
+
+이때 유용한 원자적 클래스인 `AtomicReference<T>`와 `CAS(Compare And Set)`에 대해 디테일하게 다루면서,
+
+**락이 걸리지 않은 Lock-Free 구조**와 동일한 데이터 구조의 **Lock을 사용하는 Blocking 구조**의 성능을 비교 해보겠습니다.
