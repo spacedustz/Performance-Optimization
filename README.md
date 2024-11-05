@@ -98,7 +98,7 @@
 > 📕 **10. 고성능 I/O를 위한 Threading Model**
 
 **고성능 I/O를 위한 Threading Model**
-- Not Studied Yet
+- [Thread-Per-Task Model](./Description/10-고성능IO를위한-Threading-Model/Thread-Per-Task-Model.md)
 
 <br><br>
 
