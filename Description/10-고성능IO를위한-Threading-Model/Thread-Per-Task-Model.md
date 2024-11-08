@@ -230,7 +230,7 @@ public class IOBoundApplicationV2 {
 
 ---
 
-## 요약 
+## 📚 요약 
 
 **장점**
 
@@ -248,9 +248,23 @@ public class IOBoundApplicationV2 {
 - 즉 스레드 풀의 스레드 수와 처리량은 비례함
 - 마지막으로, 블로킹 호출이 빈번히 일어나는 상황에서 **스레싱(Threshing)**이 발생할 수 있음
 
+---
+
+## 📚 다음에 배워볼 것
+
+위에서 어플리케이션의 Blocking I/O 호출에 대처하는 스레딩 모델인 Thread-Per-Task 모델을 알아보았는데 이 모델에도 단점들이 많은 것을 알게 되었습니다.
+
+Blocking I/O 연산의 또 다른 해결책으로는 Non-Blocking I/O를 사용하는 방법이 있으며, 
+
+이 방법또한 장단점이 있고 Thread-Per-Task 모델에선 장점이던 것이 Non-Blocking I/O 에선 단점으로 작용하기도 합니다.
+
+그래서 다음에 학습할 것은 Thread-Per-Task 모델과 Non-Blocking I/O의 장점들만 모아서 만든 새로운 모델인 가상스레드 를 학습 할 예정입니다.
+
 <br>
 
-**다음에 배워볼 것**
+**Thread-Per-Task 모델과 Non-Blocking I/O의 장점**들만 모아봤습니다.
 
-- 다른 접근 방법을 이용해 블로킹 호출과 IO 블로킹 호출이 있는 작업을 관리하는 샘플 개발
-- Core-Per Threading Model(코어 당 작업 스레딩 모델) 학습 예정
+- 가독성 있는 코드 (Thread-Per-Task)
+- 용이한 테스트, 디버깅 (Thread-Per-Task)
+- 성능 개선 (Non-Blocking I/O)
+- 제어의 역전 문제 해결 (Non-Blocking I/O)
