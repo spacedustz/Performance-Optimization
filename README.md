@@ -105,7 +105,7 @@
 > 📕 **11. 가상 스레드와 고성능 I/O**
 
 **가상 Thread와 고성능 I/O**
-- Not Studied Yet
+- [Virtual Thread란?](./Description/11-가상스레드/Virtual-Thread.md)
 
 <br><br>
 
