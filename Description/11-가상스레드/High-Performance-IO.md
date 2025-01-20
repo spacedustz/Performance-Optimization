@@ -252,29 +252,39 @@ JVM이 내부적으로 자체 스케쥴링하므로 개발자가 수동으로 �
 
 ```java
 @Slf4j
-public class FixedVirtualThreadPool {
-    private static final int MAX_CONCURRENT_THREADS = 100; // 최대 동시 실행 스레드 수
-    private static final Semaphore semaphore = new Semaphore(MAX_CONCURRENT_THREADS);
+public class VirtualThreadWithBlockingCalls {
+    private static final int NUMBER_OF_VIRTUAL_THREADS = 1000;
 
-    public static void main(String[] args) throws InterruptedException {
-        ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor();
+    public static void main(String[] args)throws InterruptedException {
+        List<Thread> virtualThreads = new ArrayList<>();
 
-        for (int i = 0; i < 1000; i++) {
-            semaphore.acquire(); // 실행 전 세마포어 획득
-            executorService.submit(() -> {
-                try {
-                    log.info("Thread : {}", Thread.currentThread());
-                    Thread.sleep(1000); // 작업 수행
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } finally {
-                    semaphore.release(); // 작업 완료 후 세마포어 해제
-                }
-            });
+        for (int i = 0; i < NUMBER_OF_VIRTUAL_THREADS; i++) {
+            Thread virtualThread = Thread.ofVirtual().unstarted(new BlockingTask());
+            virtualThreads.add(virtualThread);
         }
 
-        executorService.shutdown();
-        executorService.close();
+        for (Thread virtualThread : virtualThreads) {
+            virtualThread.start();
+        }
+
+        for (Thread virtualThread : virtualThreads) {
+            virtualThread.join();
+        }
+    }
+
+    private static class BlockingTask implements Runnable {
+        @Override
+        public void run() {
+            log.info("Inside Thread : {} Before Blocking Call", Thread.currentThread());
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            log.info("Inside Thread : {} After Blocking Call", Thread.currentThread());
+        }
     }
 }
 ```
