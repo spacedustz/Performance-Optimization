@@ -1,6 +1,6 @@
 ## Performance-Optimization
 
-성능을 위한 코딩을 연습하는 저장소
+성능을 위한 코딩을 연습하는 저장소 (100% 수강 완료)
 
 ---
 
@@ -107,10 +107,3 @@
 **가상 Thread와 고성능 I/O**
 - [Virtual Thread란?](./Description/11-가상스레드/Virtual-Thread.md)
 - [High Performance Blocking I/O](./Description/11-가상스레드/High-Performance-IO.md)
-
-<br><br>
-
-> 📕 **12. 분산 시스템, 빅데이터, 성능**
-
-**분산 시스템, 빅데이터, 성능**
-- Not Studied Yet
