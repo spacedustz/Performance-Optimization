@@ -106,6 +106,7 @@
 
 **가상 Thread와 고성능 I/O**
 - [Virtual Thread란?](./Description/11-가상스레드/Virtual-Thread.md)
+- [High Performance Blocking I/O](./Description/11-가상스레드/High-Performance-IO.md)
 
 <br><br>
 
